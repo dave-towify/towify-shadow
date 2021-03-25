@@ -113,7 +113,6 @@ export class ShadowComponent implements OnInit {
   }
 
   moveDot(): void {
-    console.log(this.dotX, this.dotY);
     this.boxShadowManager.spinButtonPosition = {x: this.dotX, y: this.dotY};
     this.boxShadowManager.distance = this.distance;
     this.boxShadowManager.getShadowAngle( result => {
@@ -121,7 +120,6 @@ export class ShadowComponent implements OnInit {
       this.shadows[this.index].horizontalShadow = result.horizontalOffset;
       this.shadows[this.index].verticalShadow = result.verticalOffset;
       this.calculateAndChangeStyle();
-      console.log('daoming', result);
     });
   }
 
