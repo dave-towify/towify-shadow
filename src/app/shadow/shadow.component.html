@@ -1,20 +1,13 @@
 <div id="container">
   <div id="input">
     <p>Pick a div</p>
-    <select (change)="selectDiv(divSelect.selectedIndex)" #divSelect>
+    <select (change)="selectShadowBox(divSelect.selectedIndex)" #divSelect>
       <option *ngFor="let shadow of shadows; let shadowIndex = index" [value]="shadowIndex">
         div {{shadowIndex + 1}}</option>
     </select>
 
     <p>color</p>
-    <input type="text" [value]="shadows[index].color" disabled/>
-    <input
-      [style.background]="shadows[index].color"
-      [(colorPicker)]="shadows[index].color"
-      (colorPickerChange)="changeStyle()"
-      [cpPresetColors]="['#fff', '#000', '#2889e9', '#e920e9', '#fff500', 'rgb(236,64,64)']"
-      style="width: 15px; height: 15px; border: none; cursor: pointer;"
-    />
+    <color-sketch color="{{shadows[index].color}}" (onChangeComplete)="changeColor($event)"></color-sketch>
 
     <p>angle panel</p>
     <div class="circle">
@@ -24,17 +17,17 @@
     <p>params</p>
     <div id="params">
       <label>angle:</label>
-      <input [(ngModel)]="angle" (ngModelChange)="calculateAndChangeStyle()" min="0" max="360" placeholder="angle" type="number"/>
+      <input #angleInput [value]="angle" (change)="changeAngle(angleInput.valueAsNumber)" min="0" max="360" placeholder="angle" type="number"/>
 
       <label>distance:</label>
-      <input [(ngModel)]="distance" (ngModelChange)="calculateAndChangeStyle()" min="0" max="100" placeholder="distance"
+      <input #distanceInput [value]="distance" (change)="changeDistance(distanceInput.valueAsNumber)" min="0" max="100" placeholder="distance"
              type="number"/>
 
       <label>spread:</label>
-      <input [(ngModel)]="shadows[index].spread" (ngModelChange)="changeStyle()" placeholder="spread" type="number"/>
+      <input #spreadInput [value]="shadows[index].spread" (change)="changeSpread(spreadInput.valueAsNumber)" placeholder="spread" type="number"/>
 
       <label>blur:</label>
-      <input [(ngModel)]="shadows[index].blur" (ngModelChange)="changeStyle()" placeholder="blur" type="number"/>
+      <input #blurInput [value]="shadows[index].blur" (change)="changeBlur(blurInput.valueAsNumber)" placeholder="blur" type="number"/>
     </div>
   </div>
 

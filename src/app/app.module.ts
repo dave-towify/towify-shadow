@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { ColorPickerModule } from 'ngx-color-picker';
-import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FormsModule } from '@angular/forms';
 import { ShadowComponent } from './shadow/shadow.component';
+import {ColorSketchModule} from 'ngx-color/sketch';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ShadowComponent,
+    ShadowComponent
   ],
   imports: [
     BrowserModule,
-    ColorPickerModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ColorSketchModule
   ],
   providers: [],
   bootstrap: [AppComponent]

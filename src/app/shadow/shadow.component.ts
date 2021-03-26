@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import interact from 'interactjs';
+import {ColorEvent} from 'ngx-color';
 import {Shadow} from '../shadow';
 import {BoxShadowManager} from '../../../../soid-ui-util';
 
@@ -29,9 +30,9 @@ export class ShadowComponent implements OnInit {
   index = 0;
   angle = 0;
   distance = 0;
-  dotX = 23;
-  dotY = 13;
-  rect: DOMRect = {
+  #dotX = 23;
+  #dotY = 13;
+  #rect: DOMRect = {
     bottom: 0, left: 0, right: 0, top: 0, toJSON(): any {
     },
     height: 32,
@@ -40,7 +41,7 @@ export class ShadowComponent implements OnInit {
     y: 0
   };
 
-  pointRect: DOMRect = {
+  #pointRect: DOMRect = {
     bottom: 0, left: 0, right: 0, top: 0, toJSON(): any {
     },
     height: 6,
@@ -58,8 +59,8 @@ export class ShadowComponent implements OnInit {
      ${this.shadows[1].blur}px ${this.shadows[1].spread}px ${this.shadows[1].color}`);
     this.transformString = 'translate3D(23px,13px,0)';
 
-    this.boxShadowManager.setSpinButtonRect(this.rect);
-    this.boxShadowManager.setSpinPointRect(this.pointRect);
+    this.boxShadowManager.setSpinButtonRect(this.#rect);
+    this.boxShadowManager.setSpinPointRect(this.#pointRect);
     this.boxShadowManager.spinButtonPosition = {x: 23, y: 13};
     this.boxShadowManager.offsetFix = 3;
     this.boxShadowManager.distance = 0;
@@ -69,33 +70,58 @@ export class ShadowComponent implements OnInit {
     interact('.dot').draggable({
       listeners: {
         move: event => {
-          this.dotX += event.dx;
-          this.dotY += event.dy;
+          this.#dotX += event.dx;
+          this.#dotY += event.dy;
+          this.moveDot();
+        },
+        end: event => {
+          this.#dotX += event.dx;
+          this.#dotY += event.dy;
           this.moveDot();
         }
       }
     });
   }
 
-  selectDiv(index: number): void {
+  selectShadowBox(index: number): void {
     this.index = index;
     this.calculateAngleAndDistance();
     this.transformDot();
     this.changeStyle();
   }
 
+  changeAngle(angle: number): void {
+    this.angle = angle;
+    this.calculateAndChangeStyle();
+  }
+
+  changeDistance(distance: number): void {
+    this.distance = distance;
+    this.calculateAndChangeStyle();
+  }
+
+  changeSpread(spread: number): void {
+    this.shadows[this.index].spread = spread;
+    this.changeStyle();
+  }
+
+  changeBlur(blur: number): void {
+    this.shadows[this.index].blur = blur;
+    this.changeStyle();
+  }
+
   calculateAndChangeStyle(): void {
-    this.calculateHVShadow();
+    this.calculateHorizontalAndVertical();
     this.transformDot();
     this.changeStyle();
   }
 
-  calculateHVShadow(): void {
+  calculateHorizontalAndVertical(): void {
     const result = this.boxShadowManager.getHorizontalAndVerticalAndPositionByAngle(this.angle, this.distance);
     this.shadows[this.index].horizontalShadow = result.horizontal;
     this.shadows[this.index].verticalShadow = result.vertical;
-    this.dotX = result.positionX;
-    this.dotY = result.positionY;
+    this.#dotX = result.positionX;
+    this.#dotY = result.positionY;
   }
 
   calculateAngleAndDistance(): void {
@@ -103,8 +129,8 @@ export class ShadowComponent implements OnInit {
       this.shadows[this.index].verticalShadow);
     this.distance = result.distance;
     this.angle = result.angle;
-    this.dotX = result.positionX;
-    this.dotY = result.positionY;
+    this.#dotX = result.positionX;
+    this.#dotY = result.positionY;
   }
 
   changeStyle(): void {
@@ -113,7 +139,7 @@ export class ShadowComponent implements OnInit {
   }
 
   moveDot(): void {
-    this.boxShadowManager.spinButtonPosition = {x: this.dotX, y: this.dotY};
+    this.boxShadowManager.spinButtonPosition = {x: this.#dotX, y: this.#dotY};
     this.boxShadowManager.distance = this.distance;
     this.boxShadowManager.getShadowAngle( result => {
       this.angle = result.angle;
@@ -124,6 +150,11 @@ export class ShadowComponent implements OnInit {
   }
 
   transformDot(): void {
-    this.transformString = `translate3D(${this.dotX}px, ${this.dotY}px, 0)`;
+    this.transformString = `translate3D(${this.#dotX}px, ${this.#dotY}px, 0)`;
+  }
+
+  changeColor($event: ColorEvent): void {
+    this.shadows[this.index].color = $event.color.hex;
+    this.changeStyle();
   }
 }
