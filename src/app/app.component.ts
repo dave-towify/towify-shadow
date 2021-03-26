@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {Shadow} from './shadow';
 
 @Component({
   selector: 'app-root',

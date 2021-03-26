@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { FormsModule } from '@angular/forms';
+import {ColorSketchModule} from 'ngx-color/sketch';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
 import { ShadowComponent } from './shadow/shadow.component';
-import {ColorSketchModule} from 'ngx-color/sketch';
 
 @NgModule({
   declarations: [

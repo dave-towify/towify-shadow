@@ -1,6 +1,6 @@
 <div id="container">
   <div id="input">
-    <p>Pick a div</p>
+    <p>select a shadow box</p>
     <select (change)="selectShadowBox(divSelect.selectedIndex)" #divSelect>
       <option *ngFor="let shadow of shadows; let shadowIndex = index" [value]="shadowIndex">
         div {{shadowIndex + 1}}</option>
